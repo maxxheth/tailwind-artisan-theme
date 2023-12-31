@@ -1,0 +1,51 @@
+{
+  "private": true,
+  "devDependencies": {
+    "@_tw/themejson": "^0.2.0",
+    "@_tw/typography": "^0.5.10",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.7",
+    "adm-zip": "^0.5.10",
+    "archiver": "^6.0.1",
+    "chokidar-cli": "^3.0.0",
+    "cross-env": "^7.0.3",
+    "@biomejs/biome": "latest",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.32",
+    "postcss-import-ext-glob": "^2.1.1",
+    "tailwindcss": "^3.4.0",
+    "touch": "^3.1.0",
+    "vite": "^2.7.2"
+  },
+  "scripts": {
+    "development:tailwind:frontend": "bun tailwindcss --postcss -i ./tailwind/tailwind.css -c ./tailwind/tailwind.config.js -o ./theme/style.css",
+    "development:tailwind:editor": "cross-env _TW_TARGET=editor bun tailwindcss --postcss -i ./tailwind/tailwind.css -c ./tailwind/tailwind.config.js -o ./theme/style-editor.css",
+    "development:tailwind:editor:extra": "cross-env _TW_TARGET=editor bun tailwindcss --postcss -i tailwind/tailwind-editor-extra.css -c ./tailwind/tailwind.config.js -o ./theme/style-editor-extra.css",
+    "development:js": "vite build --mode development",
+    "development": "run-p \"development:**\"",
+    "dev": "bun run development",
+    "watch:tailwind:frontend": "bun run development:tailwind:frontend -- --watch",
+    "watch:tailwind:editor": "bun run development:tailwind:editor -- --watch",
+    "watch:tailwind:editor:extra": "bun run development:tailwind:editor:extra -- --watch",
+    "watch:tailwind:themejson": "chokidar \"./theme/theme.json\" -c \"nodetouch ./tailwind/tailwind.config.js\"",
+    "watch:js": "vite build --mode development --watch",
+    "watch": "run-p \"watch:**\"",
+    "lint": "bunx @biomejs/biome lint javascript/",
+    "format": "bunx @biomejs/biome format javascript/ --write",
+    "check": "bunx @biomejs/biome check --apply javascript/",
+    "lint-fix": "bunx @biomejs/biome lint javascript/ --fix",
+    "production:tailwind:frontend": "cross-env NODE_ENV=production bun run development:tailwind:frontend -- --minify",
+    "production:tailwind:editor": "cross-env NODE_ENV=production bun run development:tailwind:editor -- --minify",
+    "production:tailwind:editor:extra": "cross-env NODE_ENV=production bun run development:tailwind:editor:extra -- --minify",
+    "production:js": "vite build --mode production",
+    "production": "run-p \"production:**\"",
+    "prod": "bun run production",
+    "zip": "bun node_scripts/zip.js candlelight-theme",
+    "bundle": "run-s production zip"
+  },
+  "dependencies": {
+    "esbuild": "^0.19.11",
+    "rollup-plugin-esbuild": "^6.1.0"
+  }
+}
